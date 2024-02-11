@@ -118,32 +118,23 @@ print(f"Access Token: {token}")
 discover_weekly_tracks = get_discover_weekly_tracks()
 
 if discover_weekly_tracks:
-    # Get the current date
+    #gets current date
     current_date = datetime.now().strftime("%Y-%m-%d")
 
-    # Create a string with the formatted output
-    message = f"New Discover Weekly Songs on {current_date}:\n"
-    message += "```"
+    #Sends the current date of the program being run
+    message_header = f"New Discover Weekly Songs on {current_date}:\n"
+    webhook.send(message_header)
 
-    # Keep track of songs processed
-    songs_processed = 0
+    #gets the amount of songs in the playlist
+    total_songs = len(discover_weekly_tracks)
 
     for i, (song, artists, link) in enumerate(discover_weekly_tracks, start=1):
-        message += f"{i}. Song: {song}\n   Artists: {artists}\n   Link: {link}\n\n"
-        songs_processed += 1
+        #create string for each message
+        message = f"```markdown\nSong {i}/{total_songs}: {song}\nArtist: {artists}\n```\nLink: {link}"
 
-        # Send a new message after every 15 songs
-        if songs_processed % 15 == 0:
-            # Include the range of song numbers in the message
-            message += f"\nIncluded Songs: {i - 14}-{i}\n```"
-            webhook.send(message)  # Send the current message
-            message = f"New Discover Weekly Songs on {current_date}:\n```"  # Start a new code block
-
-    # Close the code block for any remaining songs
-    message += f"\nIncluded Songs: {i - (i % 15) + 1}-{i}\n```"
-
-    # Send the final message if there are any remaining songs
-    if songs_processed % 15 != 0:
+        #send message
         webhook.send(message)
+
+    print("All Discover Weekly tracks sent.")
 else:
     print("Failed to retrieve Discover Weekly tracks.")
