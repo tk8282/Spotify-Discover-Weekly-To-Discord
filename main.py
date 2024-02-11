@@ -122,7 +122,7 @@ if discover_weekly_tracks:
     current_date = datetime.now().strftime("%Y-%m-%d")
 
     #Sends the current date of the program being run
-    message_header = f"New Discover Weekly Songs on {current_date}:\n"
+    message_header = f"New Discover Weekly Songs on {current_date}:\n ***VOLUME WARNING*** DON'T LISTEN IN THE DISCORD PREVIEW"
     webhook.send(message_header)
 
     #gets the amount of songs in the playlist
