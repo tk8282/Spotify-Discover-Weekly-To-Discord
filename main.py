@@ -106,7 +106,7 @@ def get_discover_weekly_tracks():
         return None
 
 # create a Discord webhook object
-webhook_url = "https://discord.com/api/webhooks/1206121720994340924/a9V7C4-MqZrVHZWdtrZFmgrOzYp-c5r78rmrgRNyjbddXvwXvB9Imex5tVt-dnToMCS_"
+webhook_url = "PUT WEBHOOK OF THE DISCORD CHANNEL YOU WANT HERE"
 webhook = SyncWebhook.from_url(webhook_url)
 
 # example usage of the function
@@ -130,7 +130,7 @@ if discover_weekly_tracks:
 
     for i, (song, artists, link) in enumerate(discover_weekly_tracks, start=1):
         # create string for each message
-        message = f"```markdown\nSong {i}/{total_songs}: {song}\nArtist: {artists}\n```\nLink: {link}"
+        message = f"```markdown\nSong {i}/{total_songs}: {song}\nArtist: {artists}\n```Link for '{song}' by {artists}: {link}"
 
         # send message
         webhook.send(message)
