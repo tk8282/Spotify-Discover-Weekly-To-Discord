@@ -70,24 +70,24 @@ def get_discover_weekly_tracks():
     # Hardcoded playlist ID for "Discover Weekly"
     discover_weekly_playlist_id = "37i9dQZEVXcNBg9cq7OOWJ"
 
-    # Print debug information
+    # print debug information
     print(f"Playlist ID: {discover_weekly_playlist_id}")
 
-    # Define the Spotify API endpoint for getting playlist tracks
+    # define the Spotify API endpoint for getting playlist tracks
     endpoint = f'https://api.spotify.com/v1/playlists/{discover_weekly_playlist_id}/tracks'
 
-    # Set up headers with the access token for authentication
+    # set up headers with the access token
     headers = get_auth_header(token)
 
-    # Make a GET request to the Spotify API
+    # make a get request to the Spotify API
     response = requests.get(endpoint, headers=headers)
 
-    # Check if the request was successful (status code 200)
+    # check if the request was successful (status code 200)
     if response.status_code == 200:
-        # Extract information about each track from the response
+        # extract information about each track from the response
         tracks_info = response.json().get('items', [])
 
-        # Extract the names of songs, their artists, and the link to each song
+        # extract the names of songs, their artists, and the link to each song
         song_info = [
             (
                 track['track']['name'],
@@ -99,40 +99,40 @@ def get_discover_weekly_tracks():
 
         return song_info
     else:
-        # If the request was not successful, print an error message and response
+        # if the request was not successful, print an error message and response
         print(f"Error: {response.status_code}")
-        print(response.headers)  # Print headers for debugging
-        print(response.content)  # Print content for debugging
+        print(response.headers)
+        print(response.content)
         return None
 
-# Create a Discord webhook object
+# create a Discord webhook object
 webhook_url = "https://discord.com/api/webhooks/1206121720994340924/a9V7C4-MqZrVHZWdtrZFmgrOzYp-c5r78rmrgRNyjbddXvwXvB9Imex5tVt-dnToMCS_"
 webhook = SyncWebhook.from_url(webhook_url)
 
-# Example usage of the function
+# example usage of the function
 token = get_token()
 
-# Print debug information
+# print debug information
 print(f"Access Token: {token}")
 
 discover_weekly_tracks = get_discover_weekly_tracks()
 
 if discover_weekly_tracks:
-    #gets current date
+    # gets current date
     current_date = datetime.now().strftime("%Y-%m-%d")
 
-    #Sends the current date of the program being run
+    # sends the current date of the program being run
     message_header = f"New Discover Weekly Songs on {current_date}:\n ***VOLUME WARNING*** DON'T LISTEN IN THE DISCORD PREVIEW"
     webhook.send(message_header)
 
-    #gets the amount of songs in the playlist
+    # gets the amount of songs in the playlist
     total_songs = len(discover_weekly_tracks)
 
     for i, (song, artists, link) in enumerate(discover_weekly_tracks, start=1):
-        #create string for each message
+        # create string for each message
         message = f"```markdown\nSong {i}/{total_songs}: {song}\nArtist: {artists}\n```\nLink: {link}"
 
-        #send message
+        # send message
         webhook.send(message)
 
     print("All Discover Weekly tracks sent.")
